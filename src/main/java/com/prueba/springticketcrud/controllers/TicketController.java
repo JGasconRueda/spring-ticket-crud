@@ -1,5 +1,7 @@
 package com.prueba.springticketcrud.controllers;
 
+import java.sql.Timestamp;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import com.prueba.springticketcrud.services.TicketService;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,11 @@ public class TicketController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Ticket>> getAllTickets() {
         return new ResponseEntity<>(ticketService.findAll(), HttpStatus.OK);
+    }
+    
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Ticket>> getAllTickets(@PathVariable Timestamp startDate, @PathVariable Timestamp endDate) {
+        return new ResponseEntity<>(ticketService.findByCreationDateBetween(startDate, endDate), HttpStatus.OK);
     }
 	
     @PutMapping(value = "{ticketId}", produces = MediaType.APPLICATION_JSON_VALUE)
