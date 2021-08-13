@@ -40,7 +40,7 @@ public class TicketServiceImpl implements TicketService {
 
     private void validateTicket(Ticket ticket) {
 		ticket.validateCreationDate();
-		ticket.validateAmount();
+		ticket.validateTotalAmount();
 	}
 
 	@Override

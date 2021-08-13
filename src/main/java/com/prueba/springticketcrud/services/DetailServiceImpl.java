@@ -27,11 +27,17 @@ public class DetailServiceImpl implements DetailService{
     }
 
     @Override
-    public Detail save(Detail object) {
-        return detailRepository.save(object);
+    public Detail save(Detail detail) {
+    	validateDetail(detail);
+        return detailRepository.save(detail);
     }
 
-    @Override
+    private void validateDetail(Detail detail) {
+		detail.validateDescription();
+		detail.validateAmount();
+	}
+
+	@Override
     public void delete(Detail object) {
         detailRepository.delete(object);
     }
