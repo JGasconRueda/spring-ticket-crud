@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.prueba.springticketcrud.services.TicketService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.prueba.springticketcrud.domain.Ticket;
 
 @Controller
-@RequestMapping("/ticket")
+@RequestMapping("/tickets")
 public class TicketController {
 
 	@Autowired
@@ -16,14 +17,11 @@ public class TicketController {
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket) {
-
         return new ResponseEntity<>(ticketService.save(ticket), HttpStatus.CREATED);
-
     }
 		
     @GetMapping(value = "{ticketId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book> getTicketById(@PathVariable long ticketId) {
-
+    public ResponseEntity<Ticket> getTicketById(@PathVariable long ticketId) {
         return new ResponseEntity<>(ticketService.ticketService.findById(ticketId), HttpStatus.OK);
     }
 
