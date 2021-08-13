@@ -6,8 +6,7 @@ import com.prueba.springticketcrud.repositories.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -28,8 +27,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket findById(Long aLong) {
-        return ticketRepository.findById(aLong).orElse(null);
+    public Optional<Ticket> findById(Long aLong) {
+        return ticketRepository.findById(aLong);
     }
 
     @Override

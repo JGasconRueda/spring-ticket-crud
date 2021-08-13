@@ -4,20 +4,18 @@ import com.prueba.springticketcrud.domain.Detail;
 import com.prueba.springticketcrud.domain.Ticket;
 import com.prueba.springticketcrud.services.TicketService;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 
 @DataJpaTest
-@TestMethodOrder
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TicketTest {
 
     @Autowired
@@ -31,8 +29,8 @@ public class TicketTest {
     public void shouldCreateTicket(Ticket ticket){
         
         Ticket savedTicket = ticketService.save(ticket);
-        assertNotNull(savedTicket);
-        assertFalse(savedTicket.getDetails().isEmpty());
+        Assertions.assertNotNull(savedTicket);
+        Assertions.assertFalse(savedTicket.getDetails().isEmpty());
     }
 
     @Test
@@ -128,9 +126,9 @@ public class TicketTest {
     @Order(6)
     public void shouldFindById(Ticket ticket) {
         
-        Ticket findTicket = ticketService.findById(1L);
-        
-        assertNotNull(findTicket);
+        Ticket findTicket = ticketService.findById(1L).orElse(null);
+
+        Assertions.assertNotNull(findTicket);
     }
     
     @Test
@@ -139,8 +137,8 @@ public class TicketTest {
     public void shouldFindAllTickets() {
         
         List<Ticket> findTickets = ticketService.findAll();
-        
-        assertFalse(findTickets.isEmpty());
+
+        Assertions.assertFalse(findTickets.isEmpty());
     }
     
     @Test
@@ -153,26 +151,26 @@ public class TicketTest {
     	Calendar endDate = new GregorianCalendar();
     	endDate.add(Calendar.HOUR, 1);
     	
-        Set<Ticket> findTickets = ticketService.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()), 
+        List<Ticket> findTickets = ticketService.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()),
         															new Timestamp(endDate.getTimeInMillis()));
-        
-        assertFalse(findTickets.isEmpty());
+
+        Assertions.assertFalse(findTickets.isEmpty());
     }
     
     @Test
     @DisplayName("Should Not Find By Creation Date Between")
     @Order(9)
-    public void shouldFindByCreationDateBetween() {
+    public void shouldNotFindByCreationDateBetween() {
         
     	Calendar startDate = new GregorianCalendar();
     	startDate.add(Calendar.HOUR, 1);
     	Calendar endDate = new GregorianCalendar();
     	endDate.add(Calendar.HOUR, 2);
     	
-        Set<Ticket> findTickets = ticketService.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()), 
+        List<Ticket> findTickets = ticketService.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()),
         															new Timestamp(endDate.getTimeInMillis()));
-        
-        assertTrue(findTickets.isEmpty());
+
+        Assertions.assertTrue(findTickets.isEmpty());
     }
     
     @Test
@@ -181,14 +179,14 @@ public class TicketTest {
     @Rollback(false)
     public void shouldUpdateTicket() {
     	
-    	Ticket findTicket = ticketService.findById(1L);
+    	Ticket findTicket = ticketService.findById(1L).orElse(null);
         Double newAmount = 30.0;
         findTicket.setTotalAmount(newAmount);
-        ticketService.save(ticket);
+        ticketService.save(findTicket);
         
-        Ticket updatedTicket = ticketService.findById(1L);
-        		
-        assertThat(updatedTicket.getTotalAmount()).isEqualTo(newAmount);
+        Ticket updatedTicket = ticketService.findById(1L).orElse(null);
+
+        Assertions.assertEquals(updatedTicket.getTotalAmount(),newAmount);
     }
     
     @Test
@@ -198,11 +196,11 @@ public class TicketTest {
     public void shouldDeleteTicketById() {
     	
     	boolean existBefore = ticketService.findById(1L).isPresent();
-    	ticketService.deleteById(1);
+    	ticketService.deleteById(1L);
     	boolean existAfter = ticketService.findById(1L).isPresent();
-    	
-    	assertTrue(existBefore);
-    	assertFalse(existAfter);
+
+        Assertions.assertTrue(existBefore);
+        Assertions.assertFalse(existAfter);
     }
     
     @Test
@@ -216,9 +214,9 @@ public class TicketTest {
     	boolean existBefore = ticketService.findById(savedTicket.getId()).isPresent();
     	ticketService.delete(savedTicket);
     	boolean existAfter = ticketService.findById(savedTicket.getId()).isPresent();
-    	
-    	assertTrue(existBefore);
-    	assertFalse(existAfter);
+
+        Assertions.assertTrue(existBefore);
+        Assertions.assertFalse(existAfter);
     	
     }
     
@@ -248,6 +246,8 @@ public class TicketTest {
         detailSet.add(det3);
 
         ticket.setDetails(detailSet);
+
+        return ticket;
     }
     
 }

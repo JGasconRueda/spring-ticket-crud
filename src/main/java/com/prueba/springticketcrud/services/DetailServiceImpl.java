@@ -3,10 +3,7 @@ package com.prueba.springticketcrud.services;
 import com.prueba.springticketcrud.domain.Detail;
 import com.prueba.springticketcrud.repositories.DetailRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DetailServiceImpl implements DetailService{
 
@@ -18,14 +15,14 @@ public class DetailServiceImpl implements DetailService{
 
     @Override
     public List<Detail> findAll() {
-        Set<Detail> details = new ArrayList<>();
+        List<Detail> details = new ArrayList<>();
         detailRepository.findAll().forEach(details::add);
         return details;
     }
 
     @Override
-    public Detail findById(Long aLong) {
-        return detailRepository.findById(aLong).orElse(null);
+    public Optional<Detail> findById(Long aLong) {
+        return detailRepository.findById(aLong);
     }
 
     @Override

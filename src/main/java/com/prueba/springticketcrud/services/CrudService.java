@@ -1,12 +1,13 @@
 package com.prueba.springticketcrud.services;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 
 public interface CrudService<T, ID>{
 
-    Set<T> findAll();
+    List<T> findAll();
 
-    T findById(ID id);
+    Optional<T> findById(ID id);
 
     T save(T object);
 
