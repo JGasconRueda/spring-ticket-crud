@@ -29,7 +29,7 @@ public class Ticket extends BaseEntity {
         }
     }
 
-    public void validateAmount(){
+    public void validateTotalAmount(){
         if(this.getTotalAmount()==null){
             throw new RuntimeException("Total Amount Cannot be null");
         }

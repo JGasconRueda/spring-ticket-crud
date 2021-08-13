@@ -20,5 +20,16 @@ public class Detail extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "ticked_id")
     private Ticket ticket;
-
+    
+    public void validateDescription(){
+        if(this.getDescription()==null){
+            throw new RuntimeException("Description of Detail Cannot be null");
+        }
+    }
+    
+    public void validateAmount(){
+        if(this.getAmount()==null){
+            throw new RuntimeException("Amount of Detail Cannot be null");
+        }
+    }
 }
