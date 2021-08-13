@@ -33,11 +33,17 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket save(Ticket object) {
-        return ticketRepository.save(object);
+    public Ticket save(Ticket ticket) {
+    	validateTicket(ticket);
+        return ticketRepository.save(ticket);
     }
 
-    @Override
+    private void validateTicket(Ticket ticket) {
+		ticket.validateCreationDate();
+		ticket.validateAmount();
+	}
+
+	@Override
     public void delete(Ticket object) {
         ticketRepository.delete(object);
     }
