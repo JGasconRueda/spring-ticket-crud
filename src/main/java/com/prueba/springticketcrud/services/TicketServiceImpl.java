@@ -54,7 +54,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Iterable<Ticket> findByCreationDateBetween(Timestamp startDate, Timestamp endDate) {
+    public Set<Ticket> findByCreationDateBetween(Timestamp startDate, Timestamp endDate) {
         return ticketRepository.findByCreationDateBetween(startDate,endDate);
     }
 }
