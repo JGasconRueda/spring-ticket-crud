@@ -48,11 +48,90 @@ public class TicketTest {
         ticket.setDetails(detailSet);
 
         ticketRepository.save(ticket);
+        
     }
 
     @Test
     @DisplayName("Should Not Create Ticket when creation Date is null")
     public void shouldThrowRuntimeExceptionWhenCreationDateIsNull(){
     	Ticket ticket = new Ticket();
+        ticket.setTotalAmount(20.0);
+
+        Detail det1 = new Detail();
+        det1.setTicket(ticket);
+        det1.setDescription("Detail 1");
+        det1.setAmount(10.0);
+
+        Set<Detail> detailSet = new HashSet<>();
+        detailSet.add(det1);
+ 
+        ticket.setDetails(detailSet);
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+        	ticketRepository.save(ticket);
+        });
+    }
+    
+    @Test
+    @DisplayName("Should Not Create Ticket when Total Amount is null")
+    public void shouldThrowRuntimeExceptionWhenTotalAmountIsNull(){
+    	Ticket ticket = new Ticket();
+        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
+        
+        Detail det1 = new Detail();
+        det1.setTicket(ticket);
+        det1.setDescription("Detail 1");
+        det1.setAmount(10.0);
+
+        Set<Detail> detailSet = new HashSet<>();
+        detailSet.add(det1);
+ 
+        ticket.setDetails(detailSet);
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+        	ticketRepository.save(ticket);
+        });
+    }
+    
+    @Test
+    @DisplayName("Should Not Create Ticket when Description of Detail is null")
+    public void shouldThrowRuntimeExceptionWhenDescriptionIsNull(){
+    	Ticket ticket = new Ticket();
+        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
+        ticket.setTotalAmount(20.0);
+
+        Detail det1 = new Detail();
+        det1.setTicket(ticket);
+        det1.setAmount(10.0);
+
+        Set<Detail> detailSet = new HashSet<>();
+        detailSet.add(det1);
+ 
+        ticket.setDetails(detailSet);
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+        	ticketRepository.save(ticket);
+        });
+    }
+    
+    @Test
+    @DisplayName("Should Not Create Ticket when Amount of Detail is null")
+    public void shouldThrowRuntimeExceptionWhenAmountIsNull(){
+    	Ticket ticket = new Ticket();
+        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
+        ticket.setTotalAmount(20.0);
+
+        Detail det1 = new Detail();
+        det1.setTicket(ticket);
+        det1.setDescription("Detail 1");
+
+        Set<Detail> detailSet = new HashSet<>();
+        detailSet.add(det1);
+ 
+        ticket.setDetails(detailSet);
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+        	ticketRepository.save(ticket);
+        });
     }
 }
