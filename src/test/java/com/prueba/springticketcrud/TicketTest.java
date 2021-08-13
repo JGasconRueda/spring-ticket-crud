@@ -53,6 +53,6 @@ public class TicketTest {
     @Test
     @DisplayName("Should Not Create Ticket when creation Date is null")
     public void shouldThrowRuntimeExceptionWhenCreationDateIsNull(){
-
+    	Ticket ticket = new Ticket();
     }
 }
