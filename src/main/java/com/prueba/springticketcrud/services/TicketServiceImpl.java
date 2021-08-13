@@ -21,8 +21,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Set<Ticket> findAll() {
-        Set<Ticket> tickets = new HashSet<>();
+    public List<Ticket> findAll() {
+        List<Ticket> tickets = new ArrayList<>();
         ticketRepository.findAll().forEach(tickets::add);
         return tickets;
     }
@@ -54,7 +54,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Set<Ticket> findByCreationDateBetween(Timestamp startDate, Timestamp endDate) {
+    public List<Ticket> findByCreationDateBetween(Timestamp startDate, Timestamp endDate) {
         return ticketRepository.findByCreationDateBetween(startDate,endDate);
     }
 }

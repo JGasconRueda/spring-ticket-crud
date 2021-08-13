@@ -13,7 +13,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 @DataJpaTest
 @TestMethodOrder
@@ -137,7 +138,7 @@ public class TicketTest {
     @Order(7)
     public void shouldFindAllTickets() {
         
-        Set<Ticket> findTickets = ticketService.findAll();
+        List<Ticket> findTickets = ticketService.findAll();
         
         assertFalse(findTickets.isEmpty());
     }
