@@ -2,9 +2,10 @@ package com.prueba.springticketcrud;
 
 import com.prueba.springticketcrud.domain.Detail;
 import com.prueba.springticketcrud.domain.Ticket;
-import com.prueba.springticketcrud.services.TicketService;
+import com.prueba.springticketcrud.repositories.TicketRepository;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,6 +13,7 @@ import org.springframework.test.annotation.Rollback;
 
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Stream;
 
 
 @DataJpaTest
@@ -19,131 +21,60 @@ import java.util.*;
 public class TicketTest {
 
     @Autowired
-    private TicketService ticketService;
+    private TicketRepository ticketRepository;
 
     @Test
     @DisplayName("Should Create Ticket")
     @Rollback(false)
-    @MethodSource("getTicketExample")
     @Order(1)
-    public void shouldCreateTicket(Ticket ticket){
-        
-        Ticket savedTicket = ticketService.save(ticket);
+    public void shouldCreateTicket(){
+
+        Ticket ticket = new Ticket();
+        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
+        ticket.setTotalAmount(20.0);
+
+        Detail det1 = new Detail();
+        det1.setDescription("Detail 1");
+        det1.setAmount(10.0);
+
+        Detail det2 = new Detail();
+        det2.setDescription("Detail 2");
+        det2.setAmount(5.0);
+
+        Detail det3 = new Detail();
+        det3.setDescription("Detail 3");
+        det3.setAmount(3.0);
+
+        ticket.addDetail(det1);
+        ticket.addDetail(det2);
+        ticket.addDetail(det3);
+
+        Ticket savedTicket = ticketRepository.save(ticket);
         Assertions.assertNotNull(savedTicket);
         Assertions.assertFalse(savedTicket.getDetails().isEmpty());
     }
 
     @Test
-    @DisplayName("Should Not Create Ticket when creation Date is null")
-    @Order(2)
-    public void shouldThrowRuntimeExceptionWhenCreationDateIsNull(){
-    	Ticket ticket = new Ticket();
-        ticket.setTotalAmount(20.0);
-
-        Detail det1 = new Detail();
-        det1.setTicket(ticket);
-        det1.setDescription("Detail 1");
-        det1.setAmount(10.0);
-
-        Set<Detail> detailSet = new HashSet<>();
-        detailSet.add(det1);
- 
-        ticket.setDetails(detailSet);
-
-        Assertions.assertThrows(RuntimeException.class, () -> {
-        	ticketService.save(ticket);
-        });
-    }
-    
-    @Test
-    @DisplayName("Should Not Create Ticket when Total Amount is null")
-    @Order(3)
-    public void shouldThrowRuntimeExceptionWhenTotalAmountIsNull(){
-    	Ticket ticket = new Ticket();
-        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        
-        Detail det1 = new Detail();
-        det1.setTicket(ticket);
-        det1.setDescription("Detail 1");
-        det1.setAmount(10.0);
-
-        Set<Detail> detailSet = new HashSet<>();
-        detailSet.add(det1);
- 
-        ticket.setDetails(detailSet);
-
-        Assertions.assertThrows(RuntimeException.class, () -> {
-        	ticketService.save(ticket);
-        });
-    }
-    
-    @Test
-    @DisplayName("Should Not Create Ticket when Description of Detail is null")
-    @Order(4)
-    public void shouldThrowRuntimeExceptionWhenDescriptionIsNull(){
-    	Ticket ticket = new Ticket();
-        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        ticket.setTotalAmount(20.0);
-
-        Detail det1 = new Detail();
-        det1.setTicket(ticket);
-        det1.setAmount(10.0);
-
-        Set<Detail> detailSet = new HashSet<>();
-        detailSet.add(det1);
- 
-        ticket.setDetails(detailSet);
-
-        Assertions.assertThrows(RuntimeException.class, () -> {
-        	ticketService.save(ticket);
-        });
-    }
-    
-    @Test
-    @DisplayName("Should Not Create Ticket when Amount of Detail is null")
-    @Order(5)
-    public void shouldThrowRuntimeExceptionWhenAmountIsNull(){
-    	Ticket ticket = new Ticket();
-        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        ticket.setTotalAmount(20.0);
-
-        Detail det1 = new Detail();
-        det1.setTicket(ticket);
-        det1.setDescription("Detail 1");
-
-        Set<Detail> detailSet = new HashSet<>();
-        detailSet.add(det1);
- 
-        ticket.setDetails(detailSet);
-
-        Assertions.assertThrows(RuntimeException.class, () -> {
-        	ticketService.save(ticket);
-        });
-    }
-    
-    @Test
     @DisplayName("Should Find By Id")
-    @Order(6)
-    public void shouldFindById(Ticket ticket) {
+    @Order(2)
+    public void shouldFindById() {
         
-        Ticket findTicket = ticketService.findById(1L).orElse(null);
-
+        Ticket findTicket = ticketRepository.findById(1L).orElse(null);
         Assertions.assertNotNull(findTicket);
     }
     
     @Test
     @DisplayName("Should Find All Tickets")
-    @Order(7)
+    @Order(3)
     public void shouldFindAllTickets() {
         
-        List<Ticket> findTickets = ticketService.findAll();
-
-        Assertions.assertFalse(findTickets.isEmpty());
+        Iterable<Ticket> findTickets = ticketRepository.findAll();
+        Assertions.assertTrue(findTickets.spliterator().getExactSizeIfKnown() > 0);
     }
     
     @Test
     @DisplayName("Should Find By Creation Date Between")
-    @Order(8)
+    @Order(4)
     public void shouldFindByCreationDateBetween() {
         
     	Calendar startDate = new GregorianCalendar();
@@ -151,7 +82,7 @@ public class TicketTest {
     	Calendar endDate = new GregorianCalendar();
     	endDate.add(Calendar.HOUR, 1);
     	
-        List<Ticket> findTickets = ticketService.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()),
+        List<Ticket> findTickets = ticketRepository.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()),
         															new Timestamp(endDate.getTimeInMillis()));
 
         Assertions.assertFalse(findTickets.isEmpty());
@@ -159,7 +90,7 @@ public class TicketTest {
     
     @Test
     @DisplayName("Should Not Find By Creation Date Between")
-    @Order(9)
+    @Order(5)
     public void shouldNotFindByCreationDateBetween() {
         
     	Calendar startDate = new GregorianCalendar();
@@ -167,7 +98,7 @@ public class TicketTest {
     	Calendar endDate = new GregorianCalendar();
     	endDate.add(Calendar.HOUR, 2);
     	
-        List<Ticket> findTickets = ticketService.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()),
+        List<Ticket> findTickets = ticketRepository.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()),
         															new Timestamp(endDate.getTimeInMillis()));
 
         Assertions.assertTrue(findTickets.isEmpty());
@@ -175,79 +106,74 @@ public class TicketTest {
     
     @Test
     @DisplayName("Should Update Ticket")
-    @Order(10)
+    @Order(6)
     @Rollback(false)
     public void shouldUpdateTicket() {
     	
-    	Ticket findTicket = ticketService.findById(1L).orElse(null);
+    	Ticket findTicket = ticketRepository.findById(1L).orElse(null);
         Double newAmount = 30.0;
+        assert findTicket != null;
         findTicket.setTotalAmount(newAmount);
-        ticketService.save(findTicket);
+        ticketRepository.save(findTicket);
         
-        Ticket updatedTicket = ticketService.findById(1L).orElse(null);
+        Ticket updatedTicket = ticketRepository.findById(1L).orElse(null);
 
+        assert updatedTicket != null;
         Assertions.assertEquals(updatedTicket.getTotalAmount(),newAmount);
     }
     
     @Test
     @DisplayName("Should Delete Ticket by Id")
     @Rollback(false)
-    @Order(11)
+    @Order(7)
     public void shouldDeleteTicketById() {
     	
-    	boolean existBefore = ticketService.findById(1L).isPresent();
-    	ticketService.deleteById(1L);
-    	boolean existAfter = ticketService.findById(1L).isPresent();
+    	boolean existBefore = ticketRepository.findById(1L).isPresent();
+    	ticketRepository.deleteById(1L);
+    	boolean existAfter = ticketRepository.findById(1L).isPresent();
 
         Assertions.assertTrue(existBefore);
         Assertions.assertFalse(existAfter);
     }
     
-    @Test
+    @ParameterizedTest
     @DisplayName("Should Delete Ticket")
     @Rollback(false)
     @MethodSource("getTicketExample")
-    @Order(12)
+    @Order(8)
     public void shouldDeleteTicket(Ticket ticket) {
     	
-    	Ticket savedTicket = ticketService.save(ticket);
-    	boolean existBefore = ticketService.findById(savedTicket.getId()).isPresent();
-    	ticketService.delete(savedTicket);
-    	boolean existAfter = ticketService.findById(savedTicket.getId()).isPresent();
+    	Ticket savedTicket = ticketRepository.save(ticket);
+    	boolean existBefore = ticketRepository.findById(savedTicket.getId()).isPresent();
+    	ticketRepository.delete(savedTicket);
+    	boolean existAfter = ticketRepository.findById(savedTicket.getId()).isPresent();
 
         Assertions.assertTrue(existBefore);
         Assertions.assertFalse(existAfter);
     	
     }
-    
-    private Ticket getTicketExample() {
-    	Ticket ticket = new Ticket();
+
+    private static Stream<Ticket> getTicketExample() {
+        Ticket ticket = new Ticket();
         ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
         ticket.setTotalAmount(20.0);
 
         Detail det1 = new Detail();
-        det1.setTicket(ticket);
         det1.setDescription("Detail 1");
         det1.setAmount(10.0);
 
         Detail det2 = new Detail();
-        det2.setTicket(ticket);
         det2.setDescription("Detail 2");
         det2.setAmount(5.0);
 
         Detail det3 = new Detail();
-        det3.setTicket(ticket);
         det3.setDescription("Detail 3");
         det3.setAmount(3.0);
 
-        Set<Detail> detailSet = new HashSet<>();
-        detailSet.add(det1);
-        detailSet.add(det2);
-        detailSet.add(det3);
+        ticket.addDetail(det1);
+        ticket.addDetail(det2);
+        ticket.addDetail(det3);
 
-        ticket.setDetails(detailSet);
-
-        return ticket;
+        return Stream.of(ticket);
     }
-    
 }

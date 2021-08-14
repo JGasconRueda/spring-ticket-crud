@@ -1,9 +1,12 @@
 package com.prueba.springticketcrud.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,15 +17,22 @@ import java.util.Set;
 @Table(name = "tickets")
 public class Ticket extends BaseEntity {
 
-    @Column(name = "creationDate")
-    private Timestamp creationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_date", nullable = false, updatable = false)
+    @CreatedDate
+    private Date creationDate;
 
-    @Column(name = "totalAmount")
+    @Column(name = "total_amount")
     private Double totalAmount;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy ="ticket")
+    @OneToMany(mappedBy ="ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<Detail> details = new HashSet<>();
 
+    public void addDetail(Detail detail){
+        details.add(detail);
+        detail.setTicket(this);
+    }
     public void validateCreationDate(){
         if(this.getCreationDate()==null){
             throw new RuntimeException("Creation Date Cannot be null");

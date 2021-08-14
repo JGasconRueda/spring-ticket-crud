@@ -3,6 +3,7 @@ package com.prueba.springticketcrud.services;
 import com.prueba.springticketcrud.domain.Ticket;
 import com.prueba.springticketcrud.repositories.DetailRepository;
 import com.prueba.springticketcrud.repositories.TicketRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;

@@ -13,14 +13,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.prueba.springticketcrud.domain.Ticket;
 
-@Controller
+@RestController
 @RequestMapping("/tickets")
 public class TicketController {
 
-	@Autowired
     private TicketService ticketService;
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket) {
         return new ResponseEntity<>(ticketService.save(ticket), HttpStatus.CREATED);
     }
