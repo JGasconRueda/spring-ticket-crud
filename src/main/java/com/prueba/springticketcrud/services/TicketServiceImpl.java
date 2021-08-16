@@ -3,11 +3,12 @@ package com.prueba.springticketcrud.services;
 import com.prueba.springticketcrud.domain.Ticket;
 import com.prueba.springticketcrud.repositories.DetailRepository;
 import com.prueba.springticketcrud.repositories.TicketRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -54,7 +55,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> findByCreationDateBetween(Timestamp startDate, Timestamp endDate) {
+    public List<Ticket> findByCreationDateBetween(Date startDate, Date endDate) {
         return ticketRepository.findByCreationDateBetween(startDate,endDate);
     }
 }

@@ -3,7 +3,6 @@ package com.prueba.springticketcrud;
 import com.prueba.springticketcrud.domain.Detail;
 import com.prueba.springticketcrud.domain.Ticket;
 import com.prueba.springticketcrud.repositories.TicketRepository;
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.stream.Stream;
 
 
@@ -29,21 +30,11 @@ public class TicketTest {
     @Order(1)
     public void shouldCreateTicket(){
 
-        Ticket ticket = new Ticket();
-        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        ticket.setTotalAmount(20.0);
+        Ticket ticket = new Ticket(new Date(System.currentTimeMillis()),20.0);
 
-        Detail det1 = new Detail();
-        det1.setDescription("Detail 1");
-        det1.setAmount(10.0);
-
-        Detail det2 = new Detail();
-        det2.setDescription("Detail 2");
-        det2.setAmount(5.0);
-
-        Detail det3 = new Detail();
-        det3.setDescription("Detail 3");
-        det3.setAmount(3.0);
+        Detail det1 = new Detail(1,"Detail 1",10.0);
+        Detail det2 = new Detail(1,"Detail 2",5.0);
+        Detail det3 = new Detail(1,"Detail 3",3.0);
 
         ticket.addDetail(det1);
         ticket.addDetail(det2);
@@ -82,8 +73,7 @@ public class TicketTest {
     	Calendar endDate = new GregorianCalendar();
     	endDate.add(Calendar.HOUR, 1);
     	
-        List<Ticket> findTickets = ticketRepository.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()),
-        															new Timestamp(endDate.getTimeInMillis()));
+        List<Ticket> findTickets = ticketRepository.findByCreationDateBetween(startDate.getTime(), endDate.getTime());
 
         Assertions.assertFalse(findTickets.isEmpty());
     }
@@ -98,8 +88,7 @@ public class TicketTest {
     	Calendar endDate = new GregorianCalendar();
     	endDate.add(Calendar.HOUR, 2);
     	
-        List<Ticket> findTickets = ticketRepository.findByCreationDateBetween(new Timestamp(startDate.getTimeInMillis()),
-        															new Timestamp(endDate.getTimeInMillis()));
+        List<Ticket> findTickets = ticketRepository.findByCreationDateBetween(startDate.getTime(), endDate.getTime());
 
         Assertions.assertTrue(findTickets.isEmpty());
     }
@@ -154,21 +143,11 @@ public class TicketTest {
     }
 
     private static Stream<Ticket> getTicketExample() {
-        Ticket ticket = new Ticket();
-        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        ticket.setTotalAmount(20.0);
+        Ticket ticket = new Ticket(new Date(System.currentTimeMillis()),20.0);
 
-        Detail det1 = new Detail();
-        det1.setDescription("Detail 1");
-        det1.setAmount(10.0);
-
-        Detail det2 = new Detail();
-        det2.setDescription("Detail 2");
-        det2.setAmount(5.0);
-
-        Detail det3 = new Detail();
-        det3.setDescription("Detail 3");
-        det3.setAmount(3.0);
+        Detail det1 = new Detail(1,"Detail 1",10.0);
+        Detail det2 = new Detail(1,"Detail 2",5.0);
+        Detail det3 = new Detail(1,"Detail 3",3.0);
 
         ticket.addDetail(det1);
         ticket.addDetail(det2);

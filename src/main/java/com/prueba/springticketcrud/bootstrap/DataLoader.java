@@ -7,7 +7,7 @@ import com.prueba.springticketcrud.repositories.TicketRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -27,43 +27,22 @@ public class DataLoader implements CommandLineRunner {
 
     private void loadData() {
 
-        Ticket ticket = new Ticket();
-        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        ticket.setTotalAmount(20.0);
+        Ticket ticket = new Ticket(new Date(System.currentTimeMillis()),20.0);
 
-        Detail det1 = new Detail();
-        det1.setDescription("Detail 1");
-        det1.setAmount(10.0);
-
-        Detail det2 = new Detail();
-        det2.setDescription("Detail 2");
-        det2.setAmount(5.0);
-
-        Detail det3 = new Detail();
-        det3.setDescription("Detail 3");
-        det3.setAmount(3.0);
+        Detail det1 = new Detail(1,"Detail 1",10.0);
+        Detail det2 = new Detail(1,"Detail 2",5.0);
+        Detail det3 = new Detail(1,"Detail 3",3.0);
 
         ticket.addDetail(det1);
         ticket.addDetail(det2);
         ticket.addDetail(det3);
         ticketRepository.save(ticket);
 
+        ticket = new Ticket(new Date(System.currentTimeMillis()),50.0);
 
-        ticket = new Ticket();
-        ticket.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        ticket.setTotalAmount(50.0);
-
-        det1 = new Detail();
-        det1.setDescription("Detail 11");
-        det1.setAmount(15.0);
-
-        det2 = new Detail();
-        det2.setDescription("Detail 12");
-        det2.setAmount(22.0);
-
-        det3 = new Detail();
-        det3.setDescription("Detail 13");
-        det3.setAmount(23.0);
+        det1 = new Detail(2,"Detail 11",15.0);
+        det2 = new Detail(2,"Detail 12",22.0);
+        det3 = new Detail(2,"Detail 13",23.0);
 
         ticket.addDetail(det1);
         ticket.addDetail(det2);
