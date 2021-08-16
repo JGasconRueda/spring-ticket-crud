@@ -13,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode(exclude = "details")
+@ToString(exclude = "details")
 @Entity
 @Table(name = "tickets")
 public class Ticket extends BaseEntity {
@@ -27,23 +28,12 @@ public class Ticket extends BaseEntity {
     @Column(name = "total_amount")
     private Double totalAmount;
 
-    @OneToMany(mappedBy ="ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy ="ticket", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<Detail> details = new HashSet<>();
 
     public void addDetail(Detail detail){
         details.add(detail);
         detail.setTicket(this);
-    }
-    public void validateCreationDate(){
-        if(this.getCreationDate()==null){
-            throw new RuntimeException("Creation Date Cannot be null");
-        }
-    }
-
-    public void validateTotalAmount(){
-        if(this.getTotalAmount()==null){
-            throw new RuntimeException("Total Amount Cannot be null");
-        }
     }
 }

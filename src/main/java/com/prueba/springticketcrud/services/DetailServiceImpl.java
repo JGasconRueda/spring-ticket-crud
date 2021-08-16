@@ -1,9 +1,13 @@
 package com.prueba.springticketcrud.services;
 
 import com.prueba.springticketcrud.domain.Detail;
+import com.prueba.springticketcrud.exceptions.DetailNotFoundException;
 import com.prueba.springticketcrud.repositories.DetailRepository;
+import org.springframework.beans.BeanUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class DetailServiceImpl implements DetailService{
 
@@ -30,7 +34,21 @@ public class DetailServiceImpl implements DetailService{
         return detailRepository.save(detail);
     }
 
-	@Override
+    @Override
+    public Detail update(Long aLong, Detail object) {
+        Optional<Detail> op = detailRepository.findById(aLong);
+
+        if (!op.isPresent()) {
+            throw new DetailNotFoundException("Detail with id "+aLong+" not found!!");
+        }
+        Detail orginal = op.get();
+
+        BeanUtils.copyProperties(object, orginal);
+
+        return detailRepository.save(orginal);
+    }
+
+    @Override
     public void delete(Detail object) {
         detailRepository.delete(object);
     }

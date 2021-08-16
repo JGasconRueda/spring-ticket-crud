@@ -10,6 +10,7 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @EqualsAndHashCode(exclude = "ticket")
 @Entity
+@ToString(exclude = "ticket")
 @Table(name = "details")
 public class Detail extends BaseEntity{
 

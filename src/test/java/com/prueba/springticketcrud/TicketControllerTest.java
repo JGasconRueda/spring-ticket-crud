@@ -7,12 +7,10 @@ import com.prueba.springticketcrud.domain.Ticket;
 import com.prueba.springticketcrud.services.TicketService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(TicketController.class)
 public class TicketControllerTest {
 
@@ -37,7 +34,7 @@ public class TicketControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private TicketService ticketService;
+    TicketService ticketService;
 
     @Test
     @DisplayName("Should Create Ticket")
@@ -59,7 +56,8 @@ public class TicketControllerTest {
                 .perform(post("/tickets/save")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(ticket)))
-                    .andExpect(status().isCreated());
+                    .andExpect(status().isCreated())
+                    .andExpect(content().string(objectMapper.writeValueAsString(ticket)));
     }
 
     @Test
@@ -94,7 +92,7 @@ public class TicketControllerTest {
         when(ticketService.findById(1L)).thenReturn(Optional.empty());
 
         this.mockMvc
-                .perform(get("/api/books/1"))
+                .perform(get("/tickets/1"))
                 .andExpect(status().isNotFound());
     }
 
@@ -119,23 +117,27 @@ public class TicketControllerTest {
         Ticket ticket = new Ticket(new Date(System.currentTimeMillis()),20.0);
 
         Detail det1 = new Detail(1,"Detail 1",10.0);
+        det1.setId(1L);
         Detail det2 = new Detail(1,"Detail 2",5.0);
+        det2.setId(2L);
         Detail det3 = new Detail(1,"Detail 3",3.0);
+        det3.setId(3L);
 
         ticket.addDetail(det1);
         ticket.addDetail(det2);
         ticket.addDetail(det3);
         ticket.setId(1L);
 
-        when(ticketService.save(ticket)).thenReturn(ticket);
+        when(ticketService.update(1L,ticket)).thenReturn(ticket);
 
         this.mockMvc
-                .perform(put("/tickets/1")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(ticket)))
+                .perform(put("/tickets/update/ticket/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(ticket)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(content().string(objectMapper.writeValueAsString(ticket)));
+
     }
 
     @Test

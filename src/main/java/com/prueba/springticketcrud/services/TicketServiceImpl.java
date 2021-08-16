@@ -1,8 +1,9 @@
 package com.prueba.springticketcrud.services;
 
 import com.prueba.springticketcrud.domain.Ticket;
-import com.prueba.springticketcrud.repositories.DetailRepository;
+import com.prueba.springticketcrud.exceptions.TicketNotFoundException;
 import com.prueba.springticketcrud.repositories.TicketRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,11 +15,9 @@ import java.util.Optional;
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
-    private final DetailRepository detailRepository;
 
-    public TicketServiceImpl(TicketRepository ticketRepository, DetailRepository detailRepository) {
+    public TicketServiceImpl(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
-        this.detailRepository = detailRepository;
     }
 
     @Override
@@ -35,16 +34,25 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket save(Ticket ticket) {
-    	validateTicket(ticket);
         return ticketRepository.save(ticket);
     }
 
-    private void validateTicket(Ticket ticket) {
-		ticket.validateCreationDate();
-		ticket.validateTotalAmount();
-	}
+    @Override
+    public Ticket update(Long aLong, Ticket object) {
+        Optional<Ticket> ticket = ticketRepository.findById(aLong);
 
-	@Override
+        if(!ticket.isPresent()){
+            throw new TicketNotFoundException("Ticket with id "+aLong+" not found!!");
+        }
+
+        Ticket original = ticket.get();
+
+        BeanUtils.copyProperties(object,original);
+
+        return ticketRepository.save(original);
+    }
+
+    @Override
     public void delete(Ticket object) {
         ticketRepository.delete(object);
     }
