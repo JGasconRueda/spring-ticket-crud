@@ -41,10 +41,11 @@ public class TicketController {
     public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody Ticket ticket) {
     	return new ResponseEntity<>(ticketService.save(ticket), HttpStatus.OK);
     }
-    
-    @GetMapping(value = "/delete/{id}")
-    public void deleteBookById(@PathVariable Long id) {
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> deleteBookById(@PathVariable Long id) {
     	ticketService.deleteById(id);
+        return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
     }
 	
 }

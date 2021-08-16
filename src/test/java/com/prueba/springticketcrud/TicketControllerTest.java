@@ -22,10 +22,8 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -129,32 +127,37 @@ public class TicketControllerTest {
         ticket.addDetail(det3);
         ticket.setId(1L);
 
-        Double newAmount = 30.0;
-        Ticket ticketUpdated = new Ticket(new Date(System.currentTimeMillis()),newAmount);
-
-        ticketUpdated.addDetail(det1);
-        ticketUpdated.addDetail(det2);
-        ticketUpdated.addDetail(det3);
-        ticketUpdated.setId(1L);
-
-        when(ticketService.findById(1L)).thenReturn(Optional.of(ticket));
-        ticket.setTotalAmount(newAmount);
         when(ticketService.save(ticket)).thenReturn(ticket);
 
         this.mockMvc
                 .perform(put("/tickets/1")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(ticketUpdated)))
+                    .content(objectMapper.writeValueAsString(ticket)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.totalAmount",is(newAmount)));
+                .andExpect(content().string(objectMapper.writeValueAsString(ticket)));
+    }
+
+    @Test
+    @DisplayName("Should Delete Ticket by Id")
+    public void shouldDeleteTicketById() throws Exception{
+
+        TicketService  serviceSpy = spy(ticketService);
+        doNothing().when(serviceSpy).deleteById(1L);
+
+        this.mockMvc
+                .perform(delete("/tickets/1")
+                    .contentType("application/json"))
+                .andExpect(status().isNoContent());
+        verify(ticketService, times(1)).deleteById(1L);
+
     }
 
     private Ticket createTicket(Date creationDate, Double totalAmount, List<Detail> details){
         Ticket ticket = new Ticket();
         ticket.setCreationDate(creationDate);
         ticket.setTotalAmount(totalAmount);
-        details.stream().forEach(ticket::addDetail);
+        details.forEach(ticket::addDetail);
 
         return ticket;
     }
@@ -174,11 +177,11 @@ public class TicketControllerTest {
         Detail det22 = new Detail(2,"Detail 22",65.0);
         Detail det32 = new Detail(2,"Detail 23",38.0);
         List<Detail> details2 = new ArrayList<>();
-        details2.add(det1);
-        details2.add(det2);
-        details2.add(det3);
+        details2.add(det12);
+        details2.add(det22);
+        details2.add(det32);
 
-        Ticket ticket2 = createTicket(new Date(System.currentTimeMillis()),200.0,details2);
+        Ticket ticket2 = createTicket(new Date(System.currentTimeMillis()),150.0,details2);
 
         List<Ticket> tickets = new ArrayList<>();
         tickets.add(ticket1);
