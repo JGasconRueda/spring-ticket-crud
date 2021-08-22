@@ -1,0 +1,377 @@
+{
+	"info": {
+		"_postman_id": "a8df6024-6ac1-419b-94dd-ed659010bb71",
+		"name": "CRUD Operations Collection",
+		"description": "Collection that demonstrates the functionality of the CRUD Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create New Tickect",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": null,\r\n    \"creationDate\": \"2021-08-15T09:26:30.244+00:00\",\r\n    \"totalAmount\": 120.0,\r\n    \"details\": [\r\n         {\r\n            \"id\": null,\r\n            \"lineID\": 3,\r\n            \"description\": \"Detail 31\",\r\n            \"amount\": 100.0\r\n        },\r\n        {\r\n            \"id\": null,\r\n            \"lineID\": 3,\r\n            \"description\": \"Detail 32\",\r\n            \"amount\":15.0\r\n        },\r\n        {\r\n            \"id\": null,\r\n            \"lineID\": 1,\r\n            \"description\": \"Detail 3\",\r\n            \"amount\": 3.0\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tickets/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tickets",
+						"save"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create New Tickect",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": null,\r\n    \"creationDate\": \"2021-08-15T09:26:30.244+00:00\",\r\n    \"totalAmount\": 120.0,\r\n    \"details\": [\r\n         {\r\n            \"id\": null,\r\n            \"lineID\": 3,\r\n            \"description\": \"Detail 31\",\r\n            \"amount\": 100.0\r\n        },\r\n        {\r\n            \"id\": null,\r\n            \"lineID\": 3,\r\n            \"description\": \"Detail 32\",\r\n            \"amount\":15.0\r\n        },\r\n        {\r\n            \"id\": null,\r\n            \"lineID\": 1,\r\n            \"description\": \"Detail 3\",\r\n            \"amount\": 3.0\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tickets/save",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tickets",
+								"save"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 15 Aug 2021 09:54:32 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"creationDate\": \"2021-08-15T09:26:30.244+00:00\",\n    \"totalAmount\": 120,\n    \"details\": [\n        {\n            \"id\": 7,\n            \"lineID\": 3,\n            \"description\": \"Detail 31\",\n            \"amount\": 100\n        },\n        {\n            \"id\": 8,\n            \"lineID\": 1,\n            \"description\": \"Detail 3\",\n            \"amount\": 3\n        },\n        {\n            \"id\": 9,\n            \"lineID\": 3,\n            \"description\": \"Detail 32\",\n            \"amount\": 15\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tickets/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tickets",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get By Id",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/tickets/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tickets",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 15 Aug 2021 09:57:07 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"creationDate\": \"2021-08-15T09:43:25.882+00:00\",\n    \"totalAmount\": 20,\n    \"details\": [\n        {\n            \"id\": 1,\n            \"lineID\": 1,\n            \"description\": \"Detail 1\",\n            \"amount\": 10\n        },\n        {\n            \"id\": 2,\n            \"lineID\": 1,\n            \"description\": \"Detail 2\",\n            \"amount\": 5\n        },\n        {\n            \"id\": 3,\n            \"lineID\": 1,\n            \"description\": \"Detail 3\",\n            \"amount\": 3\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get All Tickets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tickets/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tickets",
+						"all"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get All Tickets",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/tickets/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tickets",
+								"all"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 16 Aug 2021 07:22:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"creationDate\": \"2021-08-16T07:22:25.390+00:00\",\n        \"totalAmount\": 20,\n        \"details\": [\n            {\n                \"id\": 1,\n                \"lineID\": 1,\n                \"description\": \"Detail 1\",\n                \"amount\": 10\n            },\n            {\n                \"id\": 2,\n                \"lineID\": 1,\n                \"description\": \"Detail 2\",\n                \"amount\": 5\n            },\n            {\n                \"id\": 3,\n                \"lineID\": 1,\n                \"description\": \"Detail 3\",\n                \"amount\": 3\n            }\n        ]\n    },\n    {\n        \"id\": 2,\n        \"creationDate\": \"2021-08-16T07:22:25.500+00:00\",\n        \"totalAmount\": 50,\n        \"details\": [\n            {\n                \"id\": 4,\n                \"lineID\": 2,\n                \"description\": \"Detail 13\",\n                \"amount\": 23\n            },\n            {\n                \"id\": 5,\n                \"lineID\": 2,\n                \"description\": \"Detail 11\",\n                \"amount\": 15\n            },\n            {\n                \"id\": 6,\n                \"lineID\": 2,\n                \"description\": \"Detail 12\",\n                \"amount\": 22\n            }\n        ]\n    },\n    {\n        \"id\": 3,\n        \"creationDate\": \"2021-08-15T09:26:30.244+00:00\",\n        \"totalAmount\": 120,\n        \"details\": [\n            {\n                \"id\": 7,\n                \"lineID\": 3,\n                \"description\": \"Detail 31\",\n                \"amount\": 100\n            },\n            {\n                \"id\": 8,\n                \"lineID\": 1,\n                \"description\": \"Detail 3\",\n                \"amount\": 3\n            },\n            {\n                \"id\": 9,\n                \"lineID\": 3,\n                \"description\": \"Detail 32\",\n                \"amount\": 15\n            }\n        ]\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"creationDate\": \"2021-08-15T09:43:25.882+00:00\",\r\n    \"totalAmount\": 220,\r\n    \"details\": [\r\n        {\r\n            \"id\": 1,\r\n            \"lineID\": 1,\r\n            \"description\": \"Detail 1 mod\",\r\n            \"amount\": 10\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"lineID\": 1,\r\n            \"description\": \"Detail 2 mod\",\r\n            \"amount\": 5\r\n        },\r\n        {\r\n            \"id\": 3,\r\n            \"lineID\": 1,\r\n            \"description\": \"Detail 3 mod\",\r\n            \"amount\": 3\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tickets/update/ticket/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tickets",
+						"update",
+						"ticket",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"creationDate\": \"2021-08-15T09:43:25.882+00:00\",\r\n    \"totalAmount\": 220,\r\n    \"details\": [\r\n        {\r\n            \"id\": 1,\r\n            \"lineID\": 1,\r\n            \"description\": \"Detail 1 mod\",\r\n            \"amount\": 10\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"lineID\": 1,\r\n            \"description\": \"Detail 2 mod\",\r\n            \"amount\": 5\r\n        },\r\n        {\r\n            \"id\": 3,\r\n            \"lineID\": 1,\r\n            \"description\": \"Detail 3 mod\",\r\n            \"amount\": 3\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tickets/update/ticket/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tickets",
+								"update",
+								"ticket",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 16 Aug 2021 10:29:31 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"creationDate\": \"2021-08-15T09:43:25.882+00:00\",\n    \"totalAmount\": 220,\n    \"details\": [\n        {\n            \"id\": 3,\n            \"lineID\": 1,\n            \"description\": \"Detail 3 mod\",\n            \"amount\": 3\n        },\n        {\n            \"id\": 2,\n            \"lineID\": 1,\n            \"description\": \"Detail 2 mod\",\n            \"amount\": 5\n        },\n        {\n            \"id\": 1,\n            \"lineID\": 1,\n            \"description\": \"Detail 1 mod\",\n            \"amount\": 10\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete by Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tickets/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tickets",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Delete by Id",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/tickets/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tickets",
+								"1"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 16 Aug 2021 07:23:28 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}
