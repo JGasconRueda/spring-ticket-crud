@@ -27,6 +27,7 @@ public class DataLoader implements CommandLineRunner {
 
     private void loadData() {
 
+    	/*
         Ticket ticket = new Ticket(new Date(System.currentTimeMillis()),20.0);
 
         Detail det1 = new Detail(1,"Detail 1",10.0);
@@ -51,5 +52,6 @@ public class DataLoader implements CommandLineRunner {
         ticketRepository.save(ticket);
 
         System.out.println("Loaded Data...");
+        */
     }
 }
