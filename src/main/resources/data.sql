@@ -1,1 +1,1 @@
-INSERT INTO tickets (created_date, total_amount, ) VALUES ()
+INSERT INTO tickets (created_date, total_amount, ) 
