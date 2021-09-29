@@ -11,20 +11,26 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-@Profile("default")
-public class DataLoader implements CommandLineRunner {
+@Profile({"dev","prod"})
+public class DataLoaderMySQL implements CommandLineRunner {
 
     private final DetailRepository detailRepository;
     private final TicketRepository ticketRepository;
 
-    public DataLoader(DetailRepository detailRepository, TicketRepository ticketRepository) {
+    public DataLoaderMySQL(DetailRepository detailRepository, TicketRepository ticketRepository) {
         this.detailRepository = detailRepository;
         this.ticketRepository = ticketRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        loadData();
+        
+    	if(ticketRepository.count() == 0L) {
+    		loadData();
+    	}
+    	else {
+    		System.out.println("MySQL DataLoaded...");
+    	}
     }
 
     private void loadData() {
@@ -53,7 +59,7 @@ public class DataLoader implements CommandLineRunner {
 
         ticketRepository.save(ticket);
 
-        System.out.println("Loaded H2 Data...");
+        System.out.println("Loaded MySQL Data...");
         
     }
 }
