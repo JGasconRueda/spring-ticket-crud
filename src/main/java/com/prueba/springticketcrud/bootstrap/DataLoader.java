@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-@Profile("default")
+@Profile("H2")
 public class DataLoader implements CommandLineRunner {
 
     private final DetailRepository detailRepository;

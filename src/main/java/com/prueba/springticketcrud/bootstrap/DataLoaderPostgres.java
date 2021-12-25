@@ -12,7 +12,7 @@ import com.prueba.springticketcrud.repositories.DetailRepository;
 import com.prueba.springticketcrud.repositories.TicketRepository;
 
 @Component
-@Profile("postgres")
+@Profile("default")
 public class DataLoaderPostgres implements CommandLineRunner {
 	
 	private final DetailRepository detailRepository;
@@ -30,7 +30,7 @@ public class DataLoaderPostgres implements CommandLineRunner {
     		loadData();
     	}
     	else {
-    		System.out.println("Postgre DataLoaded...");
+    		System.out.println("Postgres DataLoaded...");
     	}
     }
 
