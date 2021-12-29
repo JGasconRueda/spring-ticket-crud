@@ -28,7 +28,7 @@ public class Ticket extends BaseEntity {
     @Column(name = "total_amount")
     private Double totalAmount;
 
-    @OneToMany(mappedBy ="ticket", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="ticket", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JsonManagedReference
     private Set<Detail> details = new HashSet<>();
 
